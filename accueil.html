@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accueil — ARCHIPEL Foundation</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+// React hooks from global
+const { useState, useEffect, useRef } = React;
+
+
+
+/* ═══════════════════════════════════════════════════════
+   ARCHIPEL FOUNDATION — PAGE /ACCUEIL
+   V4 — Corrections critiques appliquées (04/03/2026)
+
+   DELTA V3 → V4 :
+   [FIX-01] H1 corrigé : "La santé se crée. Elle ne se subit pas."
+            est l'IDÉAL (Niveau 1, Pathos, H1 manifeste).
+            "Réinventer la santé. Pour qu'elle dure." est la BASELINE
+            (Niveau 2, signature de marque sous le logo).
+            Source : Architecture de Wording v3 (10/02/2026), §5.
+   [FIX-02] Wording ConstatReponse : "symptomatiques sans diagnostic"
+            → "symptomatiques mais pas malades"
+            Source : Itération #9, positionnement cible validé.
+   [FIX-03] Navigation grid étendue : +4 pages produites
+            (/vision /approche /la-guilde /le-cercle).
+            Grid 4x2 (8 cartes). Carte Life toujours différenciée.
+   [FIX-04] Lien "Découvrir notre vision complète" → href="/vision"
+            (était href="#", lien mort).
+   [FIX-05] Nav grid + footer : toutes les pages produites — plus de
+            "bientôt". Architecture complète.
+            cursor not-allowed, mention italic gold "(bientôt)".
+            Signal d'honnêteté institutionnelle.
+
+   INCHANGÉ :
+   - Triptyque v3 retravaillé : conservé (meilleur que DOCX brief)
+   - 8 principes fondateurs mars 2026 : corrects, conservés
+   - Palette, animations, IntersectionObserver : conservés
+   - Floating dev brief : mis à jour V4
+   ═══════════════════════════════════════════════════════ */
+
+const COLORS = {
+  navy: "#0f1c2e",
+  navyLight: "#152234",
+  gold: "#dbb878",
+  goldLight: "#e8cc9a",
+  cream: "#ede3d6",
+  warmGray: "#f5f3ef",
+  teal: "#2a5a5e",
+  tealLight: "#3a7a7e",
+  white: "#ffffff",
+  textDark: "#1a1a2e",
+  textMid: "#4a4a5a",
+  textLight: "#8a8a9a",
+};
+
+const GoldLine = ({ width = "80px", style = {} }) => (
+  <div style={{
+    width, height: "1px",
+    background: `linear-gradient(90deg, transparent, ${COLORS.gold}, transparent)`,
+    ...style,
+  }} />
+);
+
+const Section = ({ children, bg = "transparent", id, style = {} }) => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setVisible(true); },
+      { threshold: 0.12 }
+    );
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <section ref={ref} id={id} style={{
+      background: bg,
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(28px)",
+      transition: "opacity 0.9s ease, transform 0.9s ease",
+      ...style,
+    }}>
+      {children}
+    </section>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════
+   HERO  — [FIX-01] H1 = Idéal manifeste / Baseline = signature
+   Séquence : Ethos (logo+fondateur) -> Pathos (H1 manifeste)
+   Source : Architecture Wording v3, §5, Niveaux 1 & 2
+   ═══════════════════════════════════════════════════════ */
+const HeroSection = () => {
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => { setTimeout(() => setLoaded(true), 250); }, []);
+
+  return (
+    <section style={{
+      minHeight: "100vh",
+      background: `linear-gradient(175deg, ${COLORS.navy} 0%, ${COLORS.navyLight} 55%, #0d1a28 100%)`,
+      display: "flex", flexDirection: "column",
+      alignItems: "center", justifyContent: "center",
+      padding: "60px 24px 80px",
+      position: "relative", overflow: "hidden",
+    }}>
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(ellipse at 30% 20%, rgba(219,184,120,0.03) 0%, transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(42,90,94,0.04) 0%, transparent 50%)",
+      }} />
+
+      {/* LOGO ARCHIPEL foundation — centré en ouverture */}
+      <div style={{
+        opacity: loaded ? 1 : 0,
+        transform: loaded ? "scale(1)" : "scale(0.95)",
+        transition: "all 1.1s cubic-bezier(.22,1,.36,1) 0.2s",
+        marginBottom: "28px", textAlign: "center",
+      }}>
+        {/*
+          MAQUETTE : SVG reproduisant le logo gold
+          PRODUCTION : remplacer par <img src="/LOGO_Foundation_gold_fd_transp.png" />
+          POLICES FINALES : CoCoMat Pro (ARCHIPEL) + Tenor Sans (foundation)
+        */}
+        <svg viewBox="0 0 620 210" style={{ width: "min(400px, 78vw)", height: "auto" }}>
+          <text x="310" y="80" textAnchor="middle"
+            fill={COLORS.gold}
+            fontFamily="'Cormorant Garamond','Playfair Display',Georgia,serif"
+            fontSize="64" fontWeight="300" letterSpacing="18">
+            ARCHIPEL
+          </text>
+          <text x="310" y="165" textAnchor="middle"
+            fill={COLORS.gold}
+            fontFamily="'Cormorant Garamond','Playfair Display',Georgia,serif"
+            fontSize="58" fontWeight="300" fontStyle="italic" letterSpacing="5">
+            foundation
+          </text>
+        </svg>
+      </div>
+
+      {/* BASELINE — Niveau 2 : signature de marque (sous le logo, pas en H1) */}
+      {/* Source : Architecture Wording v3 §5 — "contextes : sous le logo, LinkedIn..." */}
+      <div style={{
+        opacity: loaded ? 1 : 0,
+        transition: "opacity 1.1s ease 0.55s",
+        marginBottom: "14px", textAlign: "center",
+      }}>
+        <p style={{
+          fontFamily: "'Cormorant Garamond','Playfair Display',Georgia,serif",
+          fontSize: "clamp(12px, 1.4vw, 15px)",
+          fontStyle: "italic",
+          color: "rgba(219,184,120,0.5)",
+          letterSpacing: "0.24em",
+          textTransform: "uppercase",
+        }}>
+          Réinventer la santé. Pour qu'elle dure.
+        </p>
+      </div>
+
+      <div style={{
+        opacity: loaded ? 1 : 0,
+        transition: "opacity 1.2s ease 0.7s",
+        marginBottom: "44px",
+      }}>
+        <GoldLine width="100px" />
+      </div>
+
+      {/* H1 — [FIX-01] Niveau 1 : L'Idéal, manifeste, déclencheur Pathos */}
+      {/* Technique antithèse : "créer / subir" — paradigme salutogénèse (Antonovsky 1979) */}
+      <h1 style={{
+        fontFamily: "'Cormorant Garamond','Playfair Display',Georgia,serif",
+        fontSize: "clamp(28px, 5vw, 56px)",
+        fontWeight: 300, color: COLORS.white,
+        textAlign: "center", lineHeight: 1.2,
+        letterSpacing: "0.02em", maxWidth: "720px",
+        margin: "0 0 12px",
+        opacity: loaded ? 1 : 0,
+        transform: loaded ? "translateY(0)" : "translateY(14px)",
+        transition: "all 1s ease 0.9s",
+      }}>
+        La santé se crée.{" "}
+        <span style={{ color: COLORS.gold }}>Elle ne se subit pas.</span>
+      </h1>
+
+      {/* SOUS-TITRE — intention de la fondation */}
+      <p style={{
+        fontFamily: "'Cormorant Garamond','Playfair Display',Georgia,serif",
+        fontSize: "clamp(16px, 2vw, 20px)",
+        fontStyle: "italic", color: "rgba(255,255,255,0.5)",
+        textAlign: "center", letterSpacing: "0.03em",
+        maxWidth: "580px",
+        margin: "0 0 60px",
+        opacity: loaded ? 1 : 0,
+        transition: "opacity 1s ease 1.05s",
+      }}>
+        Fondation de service avec mission.
+      </p>
+
+      {/* DEUX COLONNES — Mission + Golden quote fondateur */}
+      <div style={{
+        display: "flex", flexWrap: "wrap", gap: "0",
+        maxWidth: "960px", width: "100%",
+        opacity: loaded ? 1 : 0,
+        transform: loaded ? "translateY(0)" : "translateY(20px)",
+        transition: "all 1s ease 1.3s",
+      }}>
+        <div style={{
+          flex: "1 1 420px", padding: "36px 36px 36px 20px",
+          borderRight: "1px solid rgba(219,184,120,0.15)",
+        }}>
+          <p style={{
+            fontFamily: "'DM Sans',sans-serif", fontSize: "13px",
+            color: COLORS.textLight, letterSpacing: "0.14em",
+            textTransform: "uppercase", marginBottom: "14px",
+          }}>Notre mission</p>
+          <p style={{
+            fontFamily: "'DM Sans',sans-serif",
+            fontSize: "clamp(15px,1.7vw,17px)",
+            color: "rgba(255,255,255,0.85)", lineHeight: 1.75,
+          }}>
+            Nous relions ce que le système de santé a séparé — pour que chaque
+            individu puisse{" "}
+            <strong style={{ color: COLORS.goldLight }}>
+              créer activement sa santé
+            </strong>.
+          </p>
+        </div>
+
+        <div style={{
+          flex: "1 1 420px", padding: "36px 20px 36px 36px",
+          display: "flex", flexDirection: "column", justifyContent: "center",
+        }}>
+          <blockquote style={{
+            fontFamily: "'Cormorant Garamond',serif",
+            fontSize: "clamp(19px,2.6vw,27px)",
+            fontStyle: "italic", color: COLORS.white, lineHeight: 1.5,
+            borderLeft: `3px solid ${COLORS.gold}`, paddingLeft: "22px",
+            margin: "0 0 16px",
+          }}>
+            « Ce n'était pas moi le problème.<br />C'était le système. »
+          </blockquote>
+          <p style={{
+            fontFamily: "'DM Sans',sans-serif", fontSize: "15px",
+            color: COLORS.gold, fontWeight: 500, paddingLeft: "25px",
+          }}>Cyril Jamot — Fondateur</p>
+          <p style={{
+            fontFamily: "'DM Sans',sans-serif", fontSize: "12.5px",
+            color: COLORS.textLight, paddingLeft: "25px", marginTop: "4px",
+          }}>
+            35 ans de parcours patient · 30+ praticiens · Personne n'avait fait le lien
+          </p>
+        </div>
+      </div>
+
+      {/* SCROLL INDICATOR */}
+      <div style={{
+        position: "absolute", bottom: "22px", left: "50%",
+        transform: "translateX(-50%)",
+        opacity: loaded ? 0.35 : 0,
+        transition: "opacity 1.5s ease 2.2s",
+      }}>
+        <div style={{
+          width: "22px", height: "36px",
+          border: `1.5px solid ${COLORS.gold}`, borderRadius: "11px",
+          display: "flex", justifyContent: "center", paddingTop: "7px",
+        }}>
+          <div style={{
+            width: "3px", height: "7px", background: COLORS.gold,
+            borderRadius: "2px", animation: "scrollDot 2s ease infinite",
+          }} />
+        </div>
+      </div>
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+        @keyframes scrollDot { 0%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(10px)} }
+        *{box-sizing:border-box;margin:0;padding:0}
+        html{scroll-behavior:smooth}
+      `}</style>
+    </section>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════
+   TRIPTYQUE — v3 retravaillé conservé (meilleur que DOCX brief)
+   TÊTE•COEUR•CORPS : convention mars 2026 OK
+   ═══════════════════════════════════════════════════════ */
+const TriptychSection = () => {
+  const pillars = [
+    {
+      title: "SOIGNER",
+      color: COLORS.navy,
+      desc: "Soigner le TÊTE\u2009•\u2009COEUR\u2009•\u2009CORPS de la personne, pas le symptôme",
+    },
+    {
+      title: "RELIER",
+      color: COLORS.teal,
+      desc: "Réunir ce que l'évolution du système de santé a séparé",
+    },
+    {
+      title: "TRANSFORMER",
+      color: COLORS.gold,
+      desc: "Devenir acteur de sa santé : passer de la santé subie à la santé co-créée",
+    },
+  ];
+
+  return (
+    <Section bg={COLORS.cream} id="triptyque" style={{ padding: "80px 24px" }}>
+      <div style={{ maxWidth: "960px", margin: "0 auto", display: "flex", flexWrap: "wrap" }}>
+        {pillars.map((p, i) => (
+          <div key={i} style={{
+            flex: "1 1 280px", padding: "32px 28px", textAlign: "center",
+            borderRight: i < 2 ? "1px solid rgba(219,184,120,0.25)" : "none",
+          }}>
+            <h3 style={{
+              fontFamily: "'DM Sans',sans-serif", fontSize: "13px",
+              fontWeight: 700, letterSpacing: "0.2em", color: p.color,
+              marginBottom: "16px",
+            }}>{p.title}</h3>
+            <p style={{
+              fontFamily: "'Cormorant Garamond',serif", fontSize: "18px",
+              color: COLORS.textDark, lineHeight: 1.65,
+            }}>{p.desc}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════
+   CONSTAT / RÉPONSE
+   [FIX-02] "symptomatiques sans diagnostic"
+            => "symptomatiques mais pas malades"
+            Source : positionnement cible validé Itération #9
+   ═══════════════════════════════════════════════════════ */
+const ConstatReponseSection = () => (
+  <Section bg={COLORS.warmGray} id="constat" style={{ padding: "80px 24px" }}>
+    <div style={{ maxWidth: "960px", margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "48px" }}>
+
+      {/* LE CONSTAT */}
+      <div style={{ flex: "1 1 400px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "22px" }}>
+          <GoldLine width="40px" />
+          <span style={{
+            fontFamily: "'DM Sans',sans-serif", fontSize: "12px",
+            fontWeight: 700, letterSpacing: "0.18em",
+            color: COLORS.textLight, textTransform: "uppercase",
+          }}>Le constat</span>
+        </div>
+        <p style={{
+          fontFamily: "'Cormorant Garamond',serif",
+          fontSize: "clamp(17px,2vw,21px)",
+          color: COLORS.textDark, lineHeight: 1.75, fontStyle: "italic",
+        }}>
+          Le système de santé excelle dans l'urgence et la pathologie aiguë.
+          Mais pour les personnes{" "}
+          <strong style={{ fontStyle: "normal" }}>symptomatiques mais pas malades</strong>{" "}
+          — ceux qui cherchent à comprendre, prévenir, traverser les grandes
+          transitions de vie — personne ne relie les points.
+        </p>
+        <p style={{
+          fontFamily: "'Cormorant Garamond',serif",
+          fontSize: "clamp(17px,2vw,21px)",
+          color: COLORS.textDark, lineHeight: 1.75, fontStyle: "italic",
+          marginTop: "16px",
+          fontWeight: 500,
+        }}>
+          Le patient porte seul la charge de sa coordination, de sa compréhension, de ses choix.
+        </p>
+      </div>
+
+      {/* NOTRE RÉPONSE */}
+      <div style={{ flex: "1 1 400px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "22px" }}>
+          <div style={{
+            width: "40px", height: "1px",
+            background: `linear-gradient(90deg, transparent, ${COLORS.teal}, transparent)`,
+          }} />
+          <span style={{
+            fontFamily: "'DM Sans',sans-serif", fontSize: "12px",
+            fontWeight: 700, letterSpacing: "0.18em",
+            color: COLORS.teal, textTransform: "uppercase",
+          }}>Notre réponse</span>
+        </div>
+        <p style={{
+          fontFamily: "'Cormorant Garamond',serif",
+          fontSize: "clamp(17px,2vw,21px)",
+          color: COLORS.textDark, lineHeight: 1.75,
+        }}>
+          ARCHIPEL est ce{" "}
+          <strong style={{ color: COLORS.teal }}>tiers de confiance</strong>{" "}
+          qui relie ces points. Fondé sur la{" "}
+          <strong style={{ color: COLORS.teal }}>Salutogénèse</strong>{" "}
+          — ce qui crée la santé, pas seulement ce qui traite la maladie —, nous
+          accompagnons et coordonnons patient, praticiens et données au service d'un
+          parcours cohérent :{" "}
+          <em>comprendre, prévenir, optimiser et traverser les grandes transitions</em>.
+        </p>
+        <p style={{
+          fontFamily: "'Cormorant Garamond',serif",
+          fontSize: "clamp(17px,2vw,21px)",
+          color: COLORS.textDark, lineHeight: 1.75,
+          marginTop: "16px",
+        }}>
+          Une fondation sans actionnaires, où les données appartiennent au patient.
+          Où les <strong>~50 % de facteurs de santé modifiables</strong> trouvent enfin
+          un accompagnateur de confiance.
+        </p>
+      </div>
+    </div>
+  </Section>
+);
+
+/* ═══════════════════════════════════════════════════════
+   8 PRINCIPES FONDATEURS — mars 2026
+   Conservés intacts (corrects dans V3, supérieurs au DOCX brief)
+   ═══════════════════════════════════════════════════════ */
+const PrinciplesSection = () => {
+  const P = [
+    { n: "01", t: "Santé Co-créée",           s: "La santé se crée. Elle ne se subit pas." },
+    { n: "02", t: "Coordination Intégrative",  s: "Réunir ce que le système de santé a séparé" },
+    { n: "03", t: "Humanité Chaleureuse",      s: "Jamais l'IA seule. Toujours humain + IA." },
+    { n: "04", t: "Rigueur Scientifique",      s: "Ce qui est validé est dit validé. Ce qui est incertain est dit incertain." },
+    { n: "05", t: "Propriété des Données",     s: "Vos données vous appartiennent. ARCHIPEL est dépositaire." },
+    { n: "06", t: "Accessibilité Universelle", s: "Le premium finance l'accessibilité. C'est le modèle." },
+    { n: "07", t: "Santé comme Bien Commun",   s: "La santé appartient à chacun et à tous." },
+    { n: "08", t: "Constructivité Positive",   s: "ARCHIPEL augmente le système. Il ne le critique pas." },
+  ];
+  return (
+    <Section bg={COLORS.cream} id="principes" style={{ padding: "80px 24px" }}>
+      <div style={{ maxWidth: "960px", margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: "44px" }}>
+          <p style={{
+            fontFamily: "'DM Sans',sans-serif", fontSize: "12px",
+            letterSpacing: "0.2em", color: COLORS.textLight,
+            textTransform: "uppercase", marginBottom: "10px",
+          }}>Nos fondements</p>
+          <h2 style={{
+            fontFamily: "'Cormorant Garamond',serif",
+            fontSize: "clamp(24px,3.5vw,36px)",
+            fontWeight: 400, color: COLORS.navy,
+          }}>8 principes fondateurs</h2>
+        </div>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))",
+          gap: "14px",
+        }}>
+          {P.map((p, i) => (
+            <div key={i} style={{
+              background: COLORS.white,
+              border: "1px solid rgba(219,184,120,0.18)",
+              borderRadius: "2px", padding: "26px 22px",
+              transition: "all .3s ease", cursor: "default",
+            }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = COLORS.gold;
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.05)";
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = "rgba(219,184,120,0.18)";
+                e.currentTarget.style.transform = "none";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              <span style={{
+                fontFamily: "'Cormorant Garamond',serif",
+                fontSize: "30px", fontWeight: 300, color: COLORS.gold,
+              }}>{p.n}</span>
+              <h3 style={{
+                fontFamily: "'DM Sans',sans-serif", fontSize: "15px",
+                fontWeight: 600, color: COLORS.navy, margin: "6px 0",
+              }}>{p.t}</h3>
+              <p style={{
+                fontFamily: "'Cormorant Garamond',serif",
+                fontSize: "15.5px", color: COLORS.textMid, lineHeight: 1.5,
+              }}>{p.s}</p>
+            </div>
+          ))}
+        </div>
+        {/* [FIX-04] Lien /vision — était href="#" */}
+        <div style={{ textAlign: "right", marginTop: "28px" }}>
+          <a href="/vision" style={{
+            fontFamily: "'DM Sans',sans-serif", fontSize: "14px",
+            color: COLORS.teal, textDecoration: "none",
+          }}>Découvrir notre vision complète →</a>
+        </div>
+      </div>
+    </Section>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════
+   NAVIGATION GRID
+   [FIX-03] Grille étendue 8 cartes (était 6)
+   +4 pages briefs produits : /vision /approche /la-guilde /le-cercle
+   Architecture réelle du site Foundation reflétée.
+   Carte ARCHIPEL Life toujours différenciée (border teal).
+   ═══════════════════════════════════════════════════════ */
+const NavigationSection = () => {
+  const pages = [
+    { t: "Vision",          s: "Trajectoire Y10 et modèle fondation",      h: "/vision" },
+    { t: "Fondements",      s: "Antonovsky, Tronto, Morin\u2026",          h: "/fondements" },
+    { t: "Notre approche",  s: "Rigueur \u00b7 Transparence \u00b7 Non-jugement", h: "/approche" },
+    { t: "Le Cercle",       s: "L'accompagnement patient",                  h: "/le-cercle" },
+    { t: "La Guilde",       s: "Le réseau de praticiens partenaires",       h: "/la-guilde" },
+    { t: "Gouvernance",     s: "Éthique et transparence",                   h: "/gouvernance" },
+    { t: "Soutenir",        s: "Mécénat et Fonds de Bourses",              h: "/soutenir" },
+    { t: "ARCHIPEL Life \u2197", s: "L'offre patient et praticien",        h: "https://archipel.life", life: true },
+  ];
+  return (
+    <Section bg={COLORS.navy} id="nav-grid" style={{ padding: "80px 24px" }}>
+      <div style={{ maxWidth: "960px", margin: "0 auto" }}>
+        <p style={{
+          fontFamily: "'DM Sans',sans-serif", fontSize: "12px",
+          letterSpacing: "0.2em", color: COLORS.textLight,
+          textTransform: "uppercase", textAlign: "center", marginBottom: "36px",
+        }}>Explorer</p>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit,minmax(210px,1fr))",
+          gap: "12px",
+        }}>
+          {pages.map((p, i) => (
+            <a key={i} href={p.soon ? undefined : p.h} style={{
+              display: "block", padding: "22px 18px", borderRadius: "2px",
+              border: p.life ? `1px solid ${COLORS.teal}` : p.soon ? "1px solid rgba(255,255,255,0.05)" : "1px solid rgba(255,255,255,0.08)",
+              background: p.life ? "rgba(42,90,94,0.12)" : "rgba(255,255,255,0.02)",
+              textDecoration: "none", transition: "all .3s ease",
+              opacity: p.soon ? 0.5 : 1,
+              cursor: p.soon ? "not-allowed" : "pointer",
+            }}
+              onMouseEnter={e => {
+                if (p.soon) return;
+                e.currentTarget.style.borderColor = p.life ? COLORS.tealLight : COLORS.gold;
+                e.currentTarget.style.transform = "scale(1.02)";
+              }}
+              onMouseLeave={e => {
+                if (p.soon) return;
+                e.currentTarget.style.borderColor = p.life ? COLORS.teal : "rgba(255,255,255,0.08)";
+                e.currentTarget.style.transform = "none";
+              }}
+            >
+              <h3 style={{
+                fontFamily: "'DM Sans',sans-serif", fontSize: "15px",
+                fontWeight: 600, color: p.life ? COLORS.tealLight : COLORS.white,
+                marginBottom: "5px",
+              }}>{p.t}{p.soon && <span style={{ fontStyle: "italic", fontSize: "12px", color: COLORS.gold, marginLeft: "8px", fontWeight: 400 }}>(bientôt)</span>}</h3>
+              <p style={{
+                fontFamily: "'Cormorant Garamond',serif",
+                fontSize: "14.5px", color: COLORS.textLight,
+              }}>{p.s}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </Section>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════
+   FOOTER — Commun toutes pages Foundation
+   ═══════════════════════════════════════════════════════ */
+const FooterSection = () => (
+  <footer style={{
+    background: COLORS.navyLight,
+    borderTop: `1px solid rgba(219,184,120,0.1)`,
+    padding: "44px 24px 28px",
+  }}>
+    <div style={{ maxWidth: "960px", margin: "0 auto", textAlign: "center" }}>
+      <p style={{
+        fontFamily: "'Cormorant Garamond',serif", fontSize: "22px",
+        fontWeight: 300, color: COLORS.gold, letterSpacing: "8px",
+        marginBottom: "6px",
+      }}>ARCHIPEL</p>
+      <p style={{
+        fontFamily: "'Cormorant Garamond',serif", fontSize: "17px",
+        fontStyle: "italic", color: COLORS.gold, letterSpacing: "3px",
+        marginBottom: "18px", opacity: 0.7,
+      }}>foundation</p>
+      <p style={{
+        fontFamily: "'Cormorant Garamond',serif", fontSize: "14.5px",
+        fontStyle: "italic", color: "rgba(255,255,255,0.45)", marginBottom: "22px",
+      }}>Réinventer la santé. Pour qu'elle dure.</p>
+      <div style={{
+        display: "flex", flexWrap: "wrap", justifyContent: "center",
+        gap: "18px", marginBottom: "22px",
+      }}>
+        {[
+          ["/vision", "Vision", true],
+          ["/fondements", "Fondements", true],
+          ["/approche", "Approche", true],
+          ["/le-cercle", "Le Cercle", true],
+          ["/la-guilde", "La Guilde", true],
+          ["/gouvernance", "Gouvernance", true],
+          ["/soutenir", "Soutenir", true],
+          ["/contact", "Contact", true],
+        ].map(([href, label, active], i) => (
+          <a key={i} href={active ? href : undefined} style={{
+            fontFamily: "'DM Sans',sans-serif", fontSize: "12.5px",
+            color: active ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.2)",
+            textDecoration: "none",
+            cursor: active ? "pointer" : "not-allowed",
+            fontStyle: active ? "normal" : "italic",
+          }}>{label}{!active && " (bientôt)"}</a>
+        ))}
+      </div>
+      <a href="https://archipel.life" style={{
+        fontFamily: "'DM Sans',sans-serif", fontSize: "13px",
+        color: COLORS.teal, textDecoration: "none",
+      }}>ARCHIPEL Life →</a>
+      <GoldLine width="50px" style={{ margin: "22px auto" }} />
+      <p style={{
+        fontFamily: "'DM Sans',sans-serif", fontSize: "11px",
+        color: "rgba(255,255,255,0.22)", letterSpacing: "0.15em", marginBottom: "6px",
+      }}>SOIGNER • RELIER • TRANSFORMER</p>
+      <p style={{
+        fontFamily: "'DM Sans',sans-serif", fontSize: "11px",
+        color: "rgba(255,255,255,0.18)",
+      }}>Mentions légales · Politique de confidentialité · © 2026 ARCHIPEL Foundation</p>
+    </div>
+  </footer>
+);
+
+/* ═══════════════════════════════════════════════════════
+   APP PRINCIPALE
+   ═══════════════════════════════════════════════════════ */
+function AccueilV4() {
+  return (
+    <div style={{
+      fontFamily: "'DM Sans','Segoe UI',sans-serif",
+      color: COLORS.textDark, background: COLORS.cream, minHeight: "100vh",
+    }}>
+
+      {/* Bandeau technique maquette */}
+      <div style={{
+        background: "linear-gradient(90deg,#1a1a2e,#2a2a4e)",
+        padding: "9px 24px", textAlign: "center",
+        position: "sticky", top: 0, zIndex: 100,
+      }}>
+        <span style={{
+          fontFamily: "'DM Sans',sans-serif", fontSize: "11.5px",
+          color: COLORS.gold, letterSpacing: "0.1em",
+        }}>
+          ✦ MAQUETTE V4 — FIX-01 H1 manifeste · FIX-02 wording Itér.#9 · FIX-03 nav 8 cartes · FIX-04 liens actifs · FIX-05 toutes pages produites — archipel.foundation ✦
+        </span>
+      </div>
+
+      <HeroSection />
+      <TriptychSection />
+      <ConstatReponseSection />
+      <PrinciplesSection />
+      <NavigationSection />
+      <FooterSection />
+
+      {/* Note flottante — brief production V4 */}
+      <div style={{
+        position: "fixed", bottom: "14px", right: "14px",
+        background: "rgba(15,28,46,0.97)",
+        border: `1px solid ${COLORS.gold}`,
+        borderRadius: "4px", padding: "12px 14px",
+        maxWidth: "300px", zIndex: 200,
+      }}>
+        <p style={{
+          fontFamily: "'DM Sans',sans-serif", fontSize: "10.5px",
+          color: COLORS.gold, fontWeight: 700,
+          letterSpacing: "0.1em", marginBottom: "6px",
+        }}>BRIEF TECHNIQUE — PRODUCTION V4</p>
+        <p style={{
+          fontFamily: "'DM Sans',sans-serif", fontSize: "10.5px",
+          color: "rgba(255,255,255,0.7)", lineHeight: 1.7,
+        }}>
+          <strong style={{ color: COLORS.goldLight }}>Logo :</strong> LOGO_Foundation_gold_fd_transp.png<br />
+          <strong style={{ color: COLORS.goldLight }}>Titres :</strong> CoCoMat Pro (mock: Cormorant Garamond)<br />
+          <strong style={{ color: COLORS.goldLight }}>Corps :</strong> Tenor Sans (mock: DM Sans)<br />
+          <strong style={{ color: COLORS.goldLight }}>Labels :</strong> Archytype Bayer-Type<br />
+          <strong style={{ color: COLORS.goldLight }}>Couleurs :</strong> navy #0f1c2e · gold #dbb878 · cream #ede3d6 · teal #2a5a5e
+        </p>
+        <div style={{
+          borderTop: "1px solid rgba(219,184,120,0.2)",
+          marginTop: "8px", paddingTop: "8px",
+        }}>
+          <p style={{
+            fontFamily: "'DM Sans',sans-serif", fontSize: "10px",
+            color: "rgba(255,255,255,0.5)", lineHeight: 1.7,
+          }}>
+            <strong style={{ color: "rgba(219,184,120,0.7)" }}>FIX-01</strong> H1 = Idéal (Wording v3 §5)<br />
+            <strong style={{ color: "rgba(219,184,120,0.7)" }}>FIX-02</strong> "sympto. mais pas malades"<br />
+            <strong style={{ color: "rgba(219,184,120,0.7)" }}>FIX-03</strong> Nav 8 cartes (+vision/approche/cercle/guilde)<br />
+            <strong style={{ color: "rgba(219,184,120,0.7)" }}>FIX-04</strong> Liens actifs (/vision, archipel.life)<br />
+            <strong style={{ color: "rgba(219,184,120,0.7)" }}>FIX-05</strong> Toutes pages produites — plus de "bientôt"
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(AccueilV4));
+</script>
+
+<style>
+  .hero-photo-bg {
+    position: relative !important;
+  }
+  .hero-photo-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('images/hero-accueil.webp');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+  }
+  .hero-photo-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(15,28,46,0.92) 0%, rgba(15,28,46,0.55) 40%, rgba(15,28,46,0.25) 100%);
+    z-index: 1;
+  }
+  .hero-photo-bg > * {
+    position: relative;
+    z-index: 2;
+  }
+</style>
+<script>
+  setTimeout(function() {
+    var s = document.querySelector('#root > div > section:first-of-type') 
+         || document.querySelector('#root section:first-of-type');
+    if (s) {
+      s.classList.add('hero-photo-bg');
+      Array.from(s.children).forEach(function(c) {
+        c.style.position = 'relative';
+        c.style.zIndex = '2';
+      });
+    }
+  }, 1500);
+</script>
+
+</body>
+</html>

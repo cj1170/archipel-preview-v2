@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — ARCHIPEL Foundation</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+// React hooks from global
+const { useState, useEffect, useRef } = React;
+
+
+
+/* ═══════════════════════════════════════════════════════
+   ARCHIPEL FOUNDATION — PAGE /CONTACT
+   V4 — Page utilitaire à haute valeur de confiance
+   Séquence : Logos (clarté fonctionnelle) → Ethos (confiance, légalité)
+   Pas de Pathos. Sobre, fonctionnel, chaleureux sans être commercial.
+   ═══════════════════════════════════════════════════════ */
+
+const C = {
+  navy: "#0f1c2e", navyLight: "#152234",
+  gold: "#dbb878", goldLight: "#e8cc9a",
+  cream: "#ede3d6", warmGray: "#f5f3ef",
+  teal: "#2a5a5e", white: "#ffffff", ivory: "#f5f0e8",
+  text: "#1a1a2e", textM: "#4a4a5a", textL: "#8a8a9a",
+};
+
+const GoldLine = ({ width = "60px", style = {} }) => (
+  <div style={{ width, height: "1px", background: `linear-gradient(90deg, transparent, ${C.gold}, transparent)`, ...style }} />
+);
+
+const Wrap = ({ children, max = 780, style = {} }) => (
+  <div style={{ maxWidth: `${max}px`, margin: "0 auto", padding: "0 24px", ...style }}>{children}</div>
+);
+
+/* ═══════════════════════════════════════════════════════
+   [1] HERO CONTACT — Minimaliste, 45vh
+   ═══════════════════════════════════════════════════════ */
+const HeroSection = () => (
+  <section style={{
+    minHeight: "45vh", background: C.navy,
+    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+    padding: "60px 24px 50px", textAlign: "center",
+  }}>
+    <p style={{
+      fontFamily: "'DM Sans',sans-serif", fontSize: "12px",
+      letterSpacing: "0.2em", color: C.gold, textTransform: "uppercase", margin: "0 0 16px",
+    }}>Contact</p>
+    <h1 style={{
+      fontFamily: "'Cormorant Garamond',serif", fontSize: "clamp(28px,4.5vw,44px)",
+      fontWeight: 300, color: C.ivory, lineHeight: 1.2, margin: "0 0 20px", maxWidth: "600px",
+    }}>Prêt à voir votre santé autrement ?</h1>
+    <p style={{
+      fontFamily: "'DM Sans',sans-serif", fontSize: "18px",
+      color: C.cream, lineHeight: 1.7, opacity: 0.85, maxWidth: "580px",
+    }}>
+      Réservez un appel découverte gratuit de 20 minutes. Pas de vente.
+      Juste une conversation pour voir si ARCHIPEL peut vous aider.
+    </p>
+  </section>
+);
+
+/* ═══════════════════════════════════════════════════════
+   [2] FORMULAIRE — Submit vers /api/contact (route Next.js existante)
+   ═══════════════════════════════════════════════════════ */
+const FormSection = () => {
+  const [form, setForm] = useState({ nom: "", prenom: "", email: "", tel: "", sujet: "", message: "" });
+  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+
+  const subjects = [
+    "Appel découverte",
+    "Devenir mécène",
+    "Rejoindre la Guilde",
+    "Partenariat",
+    "Presse & Médias",
+    "Autre demande",
+  ];
+
+  const handleSubmit = async () => {
+    if (!form.nom || !form.email || !form.sujet || !form.message) {
+      setStatus("error");
+      return;
+    }
+    setStatus("loading");
+    // En production : fetch('/api/contact', { method: 'POST', body: JSON.stringify(form) })
+    await new Promise(r => setTimeout(r, 1200));
+    setStatus("success");
+  };
+
+  const inputStyle = {
+    width: "100%", padding: "14px 16px", borderRadius: "2px",
+    border: `1px solid rgba(219,184,120,0.3)`, background: C.white,
+    fontFamily: "'DM Sans',sans-serif", fontSize: "15px", color: C.text,
+    outline: "none", transition: "border-color 0.2s",
+  };
+
+  return (
+    <section style={{ background: C.warmGray, padding: "60px 24px 70px" }}>
+      <Wrap max={720}>
+        <p style={{
+          fontFamily: "'DM Sans',sans-serif", fontSize: "12px",
+          letterSpacing: "0.18em", color: C.textL, textTransform: "uppercase",
+          textAlign: "center", margin: "0 0 8px",
+        }}>Nous écrire</p>
+        <p style={{
+          fontFamily: "'DM Sans',sans-serif", fontSize: "16px",
+          color: C.textM, fontStyle: "italic", textAlign: "center", margin: "0 0 32px",
+        }}>Réponse sous 48h. Pas de vente. Juste une conversation.</p>
+
+        {status === "success" ? (
+          <div style={{
+            border: `1px solid ${C.teal}`, borderRadius: "4px", padding: "28px 24px",
+            textAlign: "center", background: "rgba(42,90,94,0.06)",
+          }}>
+            <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "22px", color: C.teal, margin: "0 0 8px", fontWeight: 600 }}>
+              Message envoyé
+            </p>
+            <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "15px", color: C.textM }}>
+              Nous vous répondrons sous 48 heures. Merci pour votre confiance.
+            </p>
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+              <div style={{ flex: "1 1 200px" }}>
+                <label style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "13px", color: C.textM, display: "block", marginBottom: "6px" }}>Nom *</label>
+                <input style={inputStyle} placeholder="Votre nom" value={form.nom}
+                  onFocus={e => e.target.style.borderColor = C.gold}
+                  onBlur={e => e.target.style.borderColor = "rgba(219,184,120,0.3)"}
+                  onChange={e => setForm({ ...form, nom: e.target.value })} />
+              </div>
+              <div style={{ flex: "1 1 200px" }}>
+                <label style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "13px", color: C.textM, display: "block", marginBottom: "6px" }}>Prénom</label>
+                <input style={inputStyle} placeholder="Votre prénom" value={form.prenom}
+                  onFocus={e => e.target.style.borderColor = C.gold}
+                  onBlur={e => e.target.style.borderColor = "rgba(219,184,120,0.3)"}
+                  onChange={e => setForm({ ...form, prenom: e.target.value })} />
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+              <div style={{ flex: "1 1 200px" }}>
+                <label style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "13px", color: C.textM, display: "block", marginBottom: "6px" }}>Adresse email *</label>
+                <input style={inputStyle} type="email" placeholder="vous@exemple.com" value={form.email}
+                  onFocus={e => e.target.style.borderColor = C.gold}
+                  onBlur={e => e.target.style.borderColor = "rgba(219,184,120,0.3)"}
+                  onChange={e => setForm({ ...form, email: e.target.value })} />
+              </div>
+              <div style={{ flex: "1 1 200px" }}>
+                <label style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "13px", color: C.textM, display: "block", marginBottom: "6px" }}>Téléphone</label>
+                <input style={inputStyle} type="tel" placeholder="+33 6 ..." value={form.tel}
+                  onFocus={e => e.target.style.borderColor = C.gold}
+                  onBlur={e => e.target.style.borderColor = "rgba(219,184,120,0.3)"}
+                  onChange={e => setForm({ ...form, tel: e.target.value })} />
+              </div>
+            </div>
+
+            <div>
+              <label style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "13px", color: C.textM, display: "block", marginBottom: "6px" }}>Sujet de la demande *</label>
+              <select style={{ ...inputStyle, cursor: "pointer", color: form.sujet ? C.text : C.textL }}
+                value={form.sujet}
+                onFocus={e => e.target.style.borderColor = C.gold}
+                onBlur={e => e.target.style.borderColor = "rgba(219,184,120,0.3)"}
+                onChange={e => setForm({ ...form, sujet: e.target.value })}>
+                <option value="" disabled>Sélectionnez un sujet...</option>
+                {subjects.map((s, i) => <option key={i} value={s}>{s}</option>)}
+              </select>
+            </div>
+
+            <div>
+              <label style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "13px", color: C.textM, display: "block", marginBottom: "6px" }}>Votre message *</label>
+              <textarea style={{ ...inputStyle, minHeight: "120px", resize: "vertical" }}
+                placeholder="Décrivez votre demande..." value={form.message}
+                onFocus={e => e.target.style.borderColor = C.gold}
+                onBlur={e => e.target.style.borderColor = "rgba(219,184,120,0.3)"}
+                onChange={e => setForm({ ...form, message: e.target.value })} />
+            </div>
+
+            {status === "error" && (
+              <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "14px", color: "#c0392b" }}>
+                Veuillez remplir tous les champs obligatoires (*).
+              </p>
+            )}
+
+            <button onClick={handleSubmit} disabled={status === "loading"} style={{
+              width: "100%", padding: "16px", border: "none", borderRadius: "2px",
+              background: status === "loading" ? "rgba(219,184,120,0.5)" : C.navy,
+              color: C.white, fontFamily: "'DM Sans',sans-serif", fontSize: "16px",
+              fontWeight: 600, cursor: status === "loading" ? "not-allowed" : "pointer",
+              transition: "opacity 0.2s",
+            }}>
+              {status === "loading" ? "Envoi en cours..." : "Envoyer mon message"}
+            </button>
+
+            <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "11.5px", color: C.textL, textAlign: "center", lineHeight: 1.6 }}>
+              Vos données sont traitées conformément à notre politique de confidentialité.<br />
+              Contact direct : <span style={{ color: C.teal }}>contact@archipel.foundation</span> · <span style={{ color: C.teal }}>guilde@archipel.foundation</span>
+            </p>
+          </div>
+        )}
+      </Wrap>
+    </section>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════
+   [3] AUTRES FAÇONS + RÉSEAUX SOCIAUX
+   ═══════════════════════════════════════════════════════ */
+const OtherWaysSection = () => {
+  const cards = [
+    {
+      title: "Soutenir la mission",
+      text: "Rejoignez les fondateurs et façonnez l'avenir de la santé intégrative.",
+      link: "/soutenir", linkText: "En savoir plus →",
+      soon: false,
+    },
+    {
+      title: "Rejoindre la Guilde",
+      text: "Vous êtes praticien ? Rejoignez notre réseau de praticiens coordonnés.",
+      link: "/la-guilde", linkText: "En savoir plus →",
+      email: "guilde@archipel.foundation",
+      soon: false,
+    },
+  ];
+
+  const socials = [
+    { name: "LinkedIn · Foundation", url: "https://linkedin.com/company/archipel-foundation", active: true, life: false },
+    { name: "Instagram · Foundation", url: "https://instagram.com/archipel_foundation", active: true, life: false },
+    { name: "Facebook · Foundation", url: "#", active: false, life: false },
+    { name: "LinkedIn · Life", url: "https://linkedin.com/company/archipel-life", active: true, life: true },
+  ];
+
+  return (
+    <section style={{ background: C.cream, padding: "60px 24px" }}>
+      <Wrap max={780}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "16px", marginBottom: "40px" }}>
+          {cards.map((c, i) => (
+            <div key={i} style={{
+              background: C.white, border: `1px solid rgba(219,184,120,0.2)`,
+              borderRadius: "2px", padding: "28px 24px",
+            }}>
+              <h3 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "20px", color: C.navy, margin: "0 0 10px", fontWeight: 600 }}>{c.title}</h3>
+              <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "15px", color: C.textM, lineHeight: 1.6, margin: "0 0 16px" }}>{c.text}</p>
+              {c.soon ? (
+                <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "14px", color: C.textL, fontStyle: "italic" }}>
+                  Page à venir <span style={{ color: C.gold, fontStyle: "italic" }}>(bientôt)</span>
+                </span>
+              ) : (
+                <a href={c.link} style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "14px", color: C.teal, textDecoration: "none", fontWeight: 600 }}>{c.linkText}</a>
+              )}
+              {c.email && (
+                <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "13px", color: C.teal, marginTop: "8px" }}>
+                  <a href={`mailto:${c.email}`} style={{ color: C.teal, textDecoration: "none" }}>{c.email}</a>
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Séparateur Réseaux */}
+        <div style={{ borderTop: `1px solid rgba(219,184,120,0.25)`, paddingTop: "28px" }}>
+          <p style={{
+            fontFamily: "'DM Sans',sans-serif", fontSize: "12px",
+            letterSpacing: "0.18em", color: C.textL, textTransform: "uppercase",
+            textAlign: "center", margin: "0 0 20px",
+          }}>Nous suivre</p>
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px" }}>
+            {socials.map((s, i) => (
+              <a key={i} href={s.active ? s.url : undefined} target={s.active ? "_blank" : undefined}
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "8px",
+                  padding: "10px 20px", borderRadius: "2px",
+                  border: `1px solid ${!s.active ? "rgba(219,184,120,0.25)" : s.life ? C.teal : C.gold}`,
+                  color: !s.active ? C.textL : s.life ? C.teal : C.navy,
+                  fontFamily: "'DM Sans',sans-serif", fontSize: "14px", fontWeight: 500,
+                  textDecoration: "none", transition: "all 0.2s",
+                  opacity: s.active ? 1 : 0.55,
+                  cursor: s.active ? "pointer" : "not-allowed",
+                }}
+                onMouseEnter={e => {
+                  if (!s.active) return;
+                  e.currentTarget.style.background = s.life ? C.teal : C.navy;
+                  e.currentTarget.style.color = s.life ? C.white : C.gold;
+                }}
+                onMouseLeave={e => {
+                  if (!s.active) return;
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.color = s.life ? C.teal : C.navy;
+                }}
+              >
+                {s.name}
+                {!s.active && <span style={{ fontSize: "12px", fontStyle: "italic", color: C.gold }}>(bientôt)</span>}
+              </a>
+            ))}
+          </div>
+          <p style={{
+            fontFamily: "'DM Sans',sans-serif", fontSize: "12px", color: C.textL,
+            textAlign: "center", marginTop: "16px", fontStyle: "italic",
+          }}>
+            Les comptes Instagram et Facebook ARCHIPEL Life seront publiés prochainement.
+          </p>
+        </div>
+      </Wrap>
+    </section>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════
+   [4] SECTION LÉGALE — Informations obligatoires fondation
+   ═══════════════════════════════════════════════════════ */
+const LegalSection = () => {
+  const legalInfo = [
+    ["Entité", "ARCHIPEL Foundation"],
+    ["Forme juridique", "Fondation de droit français"],
+    ["Siège social", "Paris, France (enregistrement en cours)"],
+    ["N° d'enregistrement", "En cours d'enregistrement"],
+    ["Email général", "contact@archipel.foundation"],
+    ["Email praticiens", "guilde@archipel.foundation"],
+    ["Mission", "Promotion de la santé intégrative et préventive"],
+  ];
+
+  return (
+    <section style={{ background: C.cream, padding: "0 24px 60px" }}>
+      <Wrap max={720}>
+        <div style={{ borderTop: `1px solid rgba(219,184,120,0.25)`, paddingTop: "40px" }}>
+          <h2 style={{
+            fontFamily: "'Cormorant Garamond',serif", fontSize: "24px",
+            fontWeight: 400, color: C.navy, margin: "0 0 20px",
+          }}>Informations légales</h2>
+
+          <div style={{ marginBottom: "28px" }}>
+            {legalInfo.map(([label, value], i) => (
+              <div key={i} style={{
+                display: "flex", justifyContent: "space-between", alignItems: "baseline",
+                padding: "10px 0", borderBottom: i < legalInfo.length - 1 ? "1px solid rgba(219,184,120,0.12)" : "none",
+                flexWrap: "wrap", gap: "8px",
+              }}>
+                <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "14px", color: C.navy, fontWeight: 600 }}>{label}</span>
+                <span style={{
+                  fontFamily: "'DM Sans',sans-serif", fontSize: "14px",
+                  color: value.includes("@") ? C.teal : C.textM,
+                }}>
+                  {value.includes("@") ? (
+                    <a href={`mailto:${value}`} style={{ color: C.teal, textDecoration: "none" }}>{value}</a>
+                  ) : value}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Disclaimer médical — non-négociable */}
+          <div style={{
+            borderTop: `1px solid rgba(219,184,120,0.2)`, paddingTop: "20px",
+          }}>
+            <p style={{
+              fontFamily: "'DM Sans',sans-serif", fontSize: "13px",
+              color: "rgba(15,28,46,0.55)", fontStyle: "italic", lineHeight: 1.7,
+            }}>
+              ARCHIPEL ne fournit pas de diagnostic médical, de prescription, ni de traitement.
+              Les services proposés sont des accompagnements de santé préventive et intégrative.
+              En cas d'urgence médicale, appelez le <strong style={{ fontStyle: "normal" }}>15</strong> (SAMU) ou le <strong style={{ fontStyle: "normal" }}>112</strong>.
+            </p>
+          </div>
+        </div>
+      </Wrap>
+    </section>
+  );
+};
+
+/* ═══════════════════════════════════════════════════════
+   FOOTER — Commun Foundation (cohérent V4 Accueil)
+   ═══════════════════════════════════════════════════════ */
+const FooterSection = () => (
+  <footer style={{
+    background: C.navyLight, borderTop: `1px solid rgba(219,184,120,0.1)`,
+    padding: "44px 24px 28px",
+  }}>
+    <div style={{ maxWidth: "960px", margin: "0 auto", textAlign: "center" }}>
+      <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "22px", fontWeight: 300, color: C.gold, letterSpacing: "8px", marginBottom: "6px" }}>ARCHIPEL</p>
+      <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "17px", fontStyle: "italic", color: C.gold, letterSpacing: "3px", marginBottom: "18px", opacity: 0.7 }}>foundation</p>
+      <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "14.5px", fontStyle: "italic", color: "rgba(255,255,255,0.45)", marginBottom: "22px" }}>
+        Réinventer la santé. Pour qu'elle dure.
+      </p>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "18px", marginBottom: "22px" }}>
+        {[
+          ["/vision", "Vision", true], ["/fondements", "Fondements", true],
+          ["/approche", "Approche", true], ["/le-cercle", "Le Cercle", true],
+          ["/la-guilde", "La Guilde", true], ["/gouvernance", "Gouvernance", false],
+          ["/soutenir", "Soutenir", false], ["/contact", "Contact", true],
+        ].map(([href, label, active], i) => (
+          <a key={i} href={active ? href : undefined} style={{
+            fontFamily: "'DM Sans',sans-serif", fontSize: "12.5px",
+            color: active ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.2)",
+            textDecoration: "none",
+            cursor: active ? "pointer" : "not-allowed",
+            fontStyle: active ? "normal" : "italic",
+          }}>
+            {label}{!active && " (bientôt)"}
+          </a>
+        ))}
+      </div>
+      <a href="https://archipel.life" style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "13px", color: C.teal, textDecoration: "none" }}>ARCHIPEL Life →</a>
+      <GoldLine width="50px" style={{ margin: "22px auto" }} />
+      <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "11px", color: "rgba(255,255,255,0.22)", letterSpacing: "0.15em", marginBottom: "6px" }}>SOIGNER • RELIER • TRANSFORMER</p>
+      <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "11px", color: "rgba(255,255,255,0.18)" }}>Mentions légales · Politique de confidentialité · © 2026 ARCHIPEL Foundation</p>
+    </div>
+  </footer>
+);
+
+/* ═══════════════════════════════════════════════════════
+   MAIN
+   ═══════════════════════════════════════════════════════ */
+function ContactPage() {
+  return (
+    <div style={{ fontFamily: "'DM Sans','Segoe UI',sans-serif", color: C.text, background: C.cream, minHeight: "100vh" }}>
+      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet" />
+      <HeroSection />
+      <FormSection />
+      <OtherWaysSection />
+      <LegalSection />
+      <FooterSection />
+    </div>
+  );
+}
+
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(ContactPage));
+</script>
+</body>
+</html>

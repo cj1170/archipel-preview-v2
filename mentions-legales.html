@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentions légales — ARCHIPEL Foundation</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+// React hooks from global
+const { useState, useEffect, useRef } = React;
+
+/* ═══════════════════════════════════════════════════════
+   ARCHIPEL FOUNDATION — PAGE /MENTIONS-LEGALES
+   Hygiène juridique — Obligatoire avant mise en ligne
+   Corrections critiques : toutes réf. suisses supprimées
+   ═══════════════════════════════════════════════════════ */
+
+const C = {
+  navy: "#0f1c2e", navyLight: "#152234",
+  gold: "#dbb878", cream: "#ede3d6", teal: "#2a5a5e",
+  white: "#ffffff", offwhite: "#faf8f5", ivory: "#f5f0e8",
+  text: "#1a1a2e", textM: "#4a4a5a", textL: "#8a8a9a",
+};
+const GoldLine = ({ width = "60px", style = {} }) => (
+  <div style={{ width, height: "1px", background: `linear-gradient(90deg, transparent, ${C.gold}, transparent)`, ...style }} />
+);
+const Wrap = ({ children, max = 780, style = {} }) => (
+  <div style={{ maxWidth: `${max}px`, margin: "0 auto", padding: "0 24px", ...style }}>{children}</div>
+);
+
+const SectionTitle = ({ children }) => (
+  <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "24px", fontWeight: 600, color: C.teal, margin: "40px 0 16px" }}>{children}</h2>
+);
+const P = ({ children, style = {} }) => (
+  <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "15px", color: C.textM, lineHeight: 1.7, margin: "0 0 12px", ...style }}>{children}</p>
+);
+
+function MentionsLegales() {
+  return (
+    <div style={{ fontFamily: "'DM Sans',sans-serif", color: C.text, background: C.cream, minHeight: "100vh" }}>
+      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet" />
+
+      {/* HERO */}
+      <section style={{ background: C.navy, padding: "80px 24px 50px", textAlign: "center" }}>
+        <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "12px", letterSpacing: "0.2em", color: C.gold, textTransform: "uppercase", margin: "0 0 16px" }}>Informations légales</p>
+        <h1 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "clamp(28px,4vw,40px)", fontWeight: 300, color: C.ivory, margin: "0" }}>Mentions légales</h1>
+      </section>
+
+      {/* CONTENU */}
+      <section style={{ background: C.offwhite, padding: "60px 24px 80px" }}>
+        <Wrap max={720}>
+
+          <SectionTitle>Éditeur du site</SectionTitle>
+          {[
+            ["Entité", "ARCHIPEL Foundation"],
+            ["Forme juridique", "Fondation de droit français"],
+            ["Siège social", "Paris, France (enregistrement en cours)"],
+            ["N° d'enregistrement", "En cours d'enregistrement"], // TODO: Remplacer par le numéro réel dès enregistrement effectif
+            ["Email", "contact@archipel.foundation"],
+            ["Directeur de la publication", "Cyril Jamot, Fondateur & CEO"],
+          ].map(([label, value], i) => (
+            <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid rgba(219,184,120,0.12)", flexWrap: "wrap", gap: "4px" }}>
+              <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "14px", color: C.navy, fontWeight: 600 }}>{label}</span>
+              <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "14px", color: value.includes("@") ? C.teal : C.textM }}>{value}</span>
+            </div>
+          ))}
+
+          <SectionTitle>Hébergement</SectionTitle>
+          <P>Ce site est hébergé par Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis.</P>
+          <P>Les données de santé des membres ARCHIPEL (hors site vitrine) seront hébergées sur une infrastructure certifiée HDS (Hébergement de Données de Santé), localisée exclusivement dans l'Union Européenne.</P>
+          <P style={{ fontSize: "13px", fontStyle: "italic", color: C.textL }}>⏳ PENDING — Le prestataire HDS définitif sera confirmé lors du déploiement de la plateforme ARCHIPEL LIFE.</P>
+
+          <SectionTitle>Propriété intellectuelle</SectionTitle>
+          <P>L'ensemble des éléments constituant ce site (textes, images, logos, icônes, vidéos, logiciels, bases de données, mise en page) est la propriété exclusive d'ARCHIPEL Foundation ou de ses partenaires.</P>
+          <P>La marque ARCHIPEL, les logos et la méthodologie associée sont des marques déposées. Toute reproduction, représentation, modification, publication ou adaptation de tout ou partie des éléments du site est interdite, sauf autorisation écrite préalable.</P>
+
+          <SectionTitle>Limitation de responsabilité</SectionTitle>
+          <P>Les informations diffusées sur ce site sont présentées à titre informatif et général. Elles ne sauraient constituer un avis médical, un diagnostic ou une prescription de traitement.</P>
+          <P style={{ fontWeight: 600, color: C.navy }}>Pour toute question relative à votre santé, consultez un professionnel de santé qualifié.</P>
+          <P>ARCHIPEL Foundation s'efforce d'assurer l'exactitude des informations diffusées mais ne peut garantir leur exhaustivité. Les liens hypertextes vers des sites externes n'engagent pas la responsabilité d'ARCHIPEL Foundation.</P>
+
+          <SectionTitle>Cookies et traceurs</SectionTitle>
+          <P>Ce site utilise <strong>Plausible Analytics</strong>, une solution d'analyse web hébergée dans l'Union Européenne, qui ne dépose aucun cookie et ne collecte aucune donnée personnelle.</P>
+          <P>Aucun cookie publicitaire, de tracking ou d'analyse comportementale n'est déposé sur votre terminal. Aucune bannière de consentement n'est nécessaire.</P>
+          <P>Seuls des cookies techniques strictement nécessaires au fonctionnement du site (préférences de langue) peuvent être utilisés.</P>
+
+          <SectionTitle>Disclaimer médical</SectionTitle>
+          <div style={{ borderLeft: `3px solid ${C.gold}`, paddingLeft: "16px", margin: "16px 0" }}>
+            <P style={{ fontStyle: "italic", color: C.navy }}>
+              ARCHIPEL ne fournit pas de diagnostic médical, de prescription, ni de traitement. Les services proposés sont des accompagnements de santé préventive et intégrative. En cas d'urgence médicale, appelez le <strong>15</strong> (SAMU) ou le <strong>112</strong>.
+            </P>
+          </div>
+
+          <SectionTitle>Droit applicable</SectionTitle>
+          <P>Le présent site et ses mentions légales sont régis par le droit français. En cas de litige, et après tentative de résolution amiable, les tribunaux de Paris seront seuls compétents.</P>
+
+          <div style={{ textAlign: "center", marginTop: "40px" }}>
+            <P style={{ color: C.textL, fontSize: "13px" }}>Dernière mise à jour : mars 2026</P>
+            <a href="/contact" style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "14px", color: C.teal, textDecoration: "none" }}>Une question ? → Nous contacter</a>
+          </div>
+        </Wrap>
+      </section>
+
+      {/* FOOTER minimal */}
+      <footer style={{ background: C.navyLight, padding: "28px 24px", textAlign: "center" }}>
+        <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "16px", color: C.gold, letterSpacing: "6px", marginBottom: "8px" }}>ARCHIPEL <span style={{ fontStyle: "italic", letterSpacing: "2px" }}>foundation</span></p>
+        <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "11px", color: "rgba(255,255,255,0.3)" }}>© 2026 ARCHIPEL Foundation · Fondation de droit français · Paris</p>
+      </footer>
+    </div>
+  );
+}
+
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(MentionsLegales));
+</script>
+</body>
+</html>

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vision — ARCHIPEL Foundation</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+// React hooks from global
+const { useState, useEffect, useRef } = React;
+
+
+
+// ARCHIPEL Foundation — Page /vision — Maquette interactive v1
+// Stack production : Next.js 14 · Tailwind · CoCoMat Pro (titres) · Tenor Sans (corps)
+// Polices mockup : Cormorant Garamond (≈ CoCoMat Pro) · DM Sans (≈ Tenor Sans)
+
+const COLORS = {
+  navy: "#0f1c2e",
+  gold: "#dbb878",
+  cream: "#ede3d6",
+  teal: "#2a5a5e",
+  white: "#faf8f5",
+  ivory: "#f5f0e8",
+};
+
+const fonts = {
+  title: "'Cormorant Garamond', 'Georgia', serif",
+  body: "'DM Sans', 'Segoe UI', sans-serif",
+  label: "'DM Sans', sans-serif",
+};
+
+// =============================================
+// SECTION 1 — HERO
+// =============================================
+function Hero() {
+  return (
+    <section
+      style={{
+        background: COLORS.navy,
+        minHeight: "60vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "80px 24px",
+        textAlign: "center",
+      }}
+    >
+      <p
+        style={{
+          fontFamily: fonts.label,
+          color: COLORS.gold,
+          fontSize: 13,
+          letterSpacing: 6,
+          textTransform: "uppercase",
+          marginBottom: 40,
+        }}
+      >
+        NOTRE VISION
+      </p>
+
+      <h1
+        style={{
+          fontFamily: fonts.title,
+          color: COLORS.ivory,
+          fontSize: "clamp(36px, 5vw, 60px)",
+          fontWeight: 300,
+          lineHeight: 1.15,
+          margin: 0,
+        }}
+      >
+        Réinventer la santé.
+        <br />
+        Pour qu'elle dure.
+      </h1>
+
+      <p
+        style={{
+          fontFamily: fonts.body,
+          color: COLORS.cream,
+          fontSize: 17,
+          maxWidth: 580,
+          lineHeight: 1.7,
+          marginTop: 32,
+          opacity: 0.9,
+        }}
+      >
+        Un horizon à dix ans. Une trajectoire mesurable. Une conviction :
+        la santé n'est pas un marché à conquérir. C'est un bien commun à
+        construire.
+      </p>
+    </section>
+  );
+}
+
+// =============================================
+// SECTION 2 — CONVICTION
+// =============================================
+function Conviction() {
+  return (
+    <section style={{ background: COLORS.cream, padding: "80px 24px" }}>
+      <div style={{ maxWidth: 700, margin: "0 auto" }}>
+        <h2
+          style={{
+            fontFamily: fonts.title,
+            color: COLORS.navy,
+            fontSize: 32,
+            fontWeight: 600,
+            marginBottom: 32,
+          }}
+        >
+          Ce que nous voulons voir exister en 2036
+        </h2>
+
+        <p style={{ fontFamily: fonts.body, color: COLORS.navy, fontSize: 16, lineHeight: 1.8, marginBottom: 20 }}>
+          En 2036, un patient peut traverser une grande transition de vie — un burnout,
+          une ménopause, un premier signal de vieillissement, une errance diagnostique de
+          dix ans — sans porter seul la charge de comprendre, de coordonner, de choisir.
+        </p>
+
+        <p style={{ fontFamily: fonts.body, color: COLORS.navy, fontSize: 16, lineHeight: 1.8, marginBottom: 20 }}>
+          Il dispose d'un compagnon de santé qui connaît son histoire. De praticiens
+          qui communiquent entre eux. D'un espace où ses données lui appartiennent — et
+          travaillent pour lui.
+        </p>
+
+        <p style={{ fontFamily: fonts.body, color: COLORS.navy, fontSize: 16, lineHeight: 1.8, marginBottom: 28 }}>
+          <strong>Ce monde n'est pas utopique. Il est absent.</strong> ARCHIPEL est
+          construit pour le faire exister.
+        </p>
+
+        {/* Pull-quote */}
+        <div
+          style={{
+            borderLeft: `4px solid ${COLORS.gold}`,
+            background: "rgba(219,184,120,0.08)",
+            padding: "20px 24px",
+            marginBottom: 20,
+            borderRadius: "0 4px 4px 0",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: fonts.title,
+              color: COLORS.navy,
+              fontSize: 19,
+              fontStyle: "italic",
+              lineHeight: 1.7,
+              margin: 0,
+            }}
+          >
+            La Salutogénèse — ce cadre intellectuel posé par Aaron Antonovsky en 1979 —
+            pose une question simple : qu'est-ce qui crée la santé, plutôt que ce qui
+            cause la maladie ?
+          </p>
+        </div>
+
+        <p style={{ fontFamily: fonts.body, color: COLORS.navy, fontSize: 16, lineHeight: 1.8 }}>
+          Nous y répondons avec une infrastructure, une communauté, et un modèle
+          économique qui n'oblige pas à choisir entre mission et pérennité.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+// =============================================
+// SECTION 3 — TRAJECTOIRE
+// =============================================
+const trajectory = [
+  { horizon: "2026 — Y1", geo: "France · Paris & Bordeaux", highlight: false },
+  { horizon: "2027 — Y2", geo: "France", highlight: false },
+  { horizon: "2028 — Y3", geo: "France · 1er Sanctuaire", highlight: false },
+  { horizon: "2030 — Y5", geo: "Europe", highlight: false },
+  { horizon: "2036 — Y10", geo: "Mondial", highlight: true },
+];
+
+function Trajectoire() {
+  return (
+    <section style={{ background: COLORS.white, padding: "80px 24px" }}>
+      <div style={{ maxWidth: 900, margin: "0 auto" }}>
+        <h2
+          style={{
+            fontFamily: fonts.title,
+            color: COLORS.teal,
+            fontSize: 32,
+            fontWeight: 600,
+            marginBottom: 12,
+          }}
+        >
+          Une ambition ancrée dans une feuille de route
+        </h2>
+
+        <p
+          style={{
+            fontFamily: fonts.body,
+            color: COLORS.navy,
+            fontSize: 16,
+            fontStyle: "italic",
+            lineHeight: 1.7,
+            marginBottom: 36,
+            maxWidth: 700,
+          }}
+        >
+          ARCHIPEL se déploie en quatre phases, de la validation française au
+          leadership européen de la santé intégrative et préventive. Chaque jalon
+          conditionne le suivant.
+        </p>
+
+        {/* Table */}
+        <div style={{ overflowX: "auto" }}>
+          <table
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              fontFamily: fonts.body,
+              fontSize: 14,
+            }}
+          >
+            <thead>
+              <tr style={{ background: COLORS.navy }}>
+                {["Horizon", "Géographie"].map((h) => (
+                  <th
+                    key={h}
+                    style={{
+                      color: COLORS.ivory,
+                      padding: "12px 16px",
+                      textAlign: "left",
+                      fontWeight: 600,
+                      fontSize: 13,
+                      letterSpacing: 0.5,
+                    }}
+                  >
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {trajectory.map((row, i) => (
+                <tr
+                  key={i}
+                  style={{
+                    background: row.highlight
+                      ? COLORS.navy
+                      : i % 2 === 0
+                      ? COLORS.cream
+                      : COLORS.white,
+                  }}
+                >
+                  <td
+                    style={{
+                      padding: "12px 16px",
+                      fontWeight: 700,
+                      color: row.highlight ? COLORS.ivory : COLORS.gold,
+                      fontFamily: fonts.title,
+                      fontSize: 15,
+                    }}
+                  >
+                    {row.horizon}
+                  </td>
+                  <td
+                    style={{
+                      padding: "12px 16px",
+                      color: row.highlight ? COLORS.ivory : COLORS.navy,
+                    }}
+                  >
+                    {row.geo}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p
+          style={{
+            fontFamily: fonts.body,
+            fontSize: 15,
+            fontStyle: "italic",
+            color: COLORS.navy,
+            textAlign: "center",
+            maxWidth: 600,
+            margin: "28px auto 0",
+            lineHeight: 1.7,
+          }}
+        >
+          Ces objectifs ne sont pas une promesse de rendement. Ce sont les jalons qui
+          permettent à la mission de tenir dans la durée et au modèle d'impact de
+          s'amplifier à mesure que la base d'utilisateurs croît.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+// =============================================
+// SECTION 4 — FONDATION
+// =============================================
+function Fondation() {
+  return (
+    <section style={{ background: COLORS.navy, padding: "80px 24px" }}>
+      <div style={{ maxWidth: 700, margin: "0 auto" }}>
+        <h2
+          style={{
+            fontFamily: fonts.title,
+            color: COLORS.gold,
+            fontSize: 32,
+            fontWeight: 600,
+            marginBottom: 32,
+          }}
+        >
+          Une fondation. Pas une startup.
+        </h2>
+
+        <p style={{ fontFamily: fonts.body, color: COLORS.cream, fontSize: 16, lineHeight: 1.8, marginBottom: 20 }}>
+          Le choix de la fondation n'est pas idéologique. Il est structurel.
+        </p>
+
+        {/* Encadré phrase clé */}
+        <div
+          style={{
+            border: `1px solid rgba(219,184,120,0.25)`,
+            borderRadius: 4,
+            padding: "20px 24px",
+            marginBottom: 24,
+            background: "rgba(219,184,120,0.06)",
+          }}
+        >
+          <p style={{ fontFamily: fonts.body, color: COLORS.cream, fontSize: 16, lineHeight: 1.8, margin: 0 }}>
+            Dans un domaine où la confiance est le premier frein à l'adoption, la forme
+            juridique envoie un signal que les mots seuls ne peuvent pas donner :{" "}
+            <strong style={{ color: COLORS.gold }}>
+              il n'y a pas d'actionnaires à satisfaire, pas de pression d'exit, pas de
+              valorisation trimestrielle à défendre.
+            </strong>{" "}
+            Les bénéfices sont réinvestis dans la mission.
+          </p>
+        </div>
+
+        <p style={{ fontFamily: fonts.body, color: COLORS.cream, fontSize: 16, lineHeight: 1.8, marginBottom: 20 }}>
+          La société opérationnelle — ARCHIPEL LIFE SAS — qui porte les services est détenue à
+          majorité par la Fondation. Elle génère les revenus. La Fondation en fixe les règles — et
+          garantit que jamais la rentabilité ne prime sur l'intérêt du patient.
+        </p>
+
+        <p style={{ fontFamily: fonts.body, color: COLORS.cream, fontSize: 16, lineHeight: 1.8, marginBottom: 20 }}>
+          Un Comité d'Éthique indépendant dispose d'un{" "}
+          <strong style={{ color: COLORS.gold }}>droit de veto</strong> sur toute
+          décision contraire aux principes fondateurs. Il n'est pas consultatif. Il est
+          structurel.
+        </p>
+
+        <p style={{ fontFamily: fonts.body, color: COLORS.cream, fontSize: 16, lineHeight: 1.8, marginBottom: 0 }}>
+          Ce modèle a un nom dans l'histoire des organisations : une fondation de
+          service avec mission. Ce qu'ARCHIPEL construit, ce n'est pas{" "}
+          <em>une valeur à maximiser</em>. C'est{" "}
+          <strong style={{ color: COLORS.gold }}>
+            <em>une confiance à mériter</em>
+          </strong>
+          .
+        </p>
+      </div>
+    </section>
+  );
+}
+
+// =============================================
+// SECTION 5 — ROBIN HOOD
+// =============================================
+function RobinHood() {
+  return (
+    <section style={{ background: COLORS.cream, padding: "80px 24px" }}>
+      <div style={{ maxWidth: 700, margin: "0 auto" }}>
+        <h2
+          style={{
+            fontFamily: fonts.title,
+            color: COLORS.navy,
+            fontSize: 32,
+            fontWeight: 600,
+            marginBottom: 32,
+          }}
+        >
+          Le premium finance l'accessibilité
+        </h2>
+
+        <p style={{ fontFamily: fonts.body, color: COLORS.navy, fontSize: 16, lineHeight: 1.8, marginBottom: 20 }}>
+          ARCHIPEL n'est pas réservé à ceux qui peuvent payer plusieurs centaines d'euros par mois.
+        </p>
+
+        <p style={{ fontFamily: fonts.body, color: COLORS.navy, fontSize: 16, lineHeight: 1.8, marginBottom: 20 }}>
+          C'est une conviction qui s'inscrit dans le modèle économique lui-même, pas
+          dans une politique de communication. Les membres aux niveaux les plus élevés
+          financent directement, par leur abonnement, le{" "}
+          <strong>Fonds de Bourses ARCHIPEL</strong> — qui permet aux personnes qui en
+          ont le plus besoin d'accéder à un accompagnement de qualité.
+        </p>
+
+        <p style={{ fontFamily: fonts.body, color: COLORS.navy, fontSize: 16, lineHeight: 1.8, marginBottom: 20 }}>
+          L'objectif à terme est qu'une majorité du portefeuille soit à prix accessible.
+          Que le Fonds de Bourses devienne un pilier structurel du modèle, pas un
+          supplément cosmétique.
+        </p>
+
+        <p style={{ fontFamily: fonts.body, color: COLORS.navy, fontSize: 16, lineHeight: 1.8, marginBottom: 24 }}>
+          Cette trajectoire commence dès les premières années. Elle n'attend pas que la
+          fondation soit « assez grande ».
+        </p>
+
+        <p
+          style={{
+            fontFamily: fonts.body,
+            fontSize: 12,
+            fontStyle: "italic",
+            color: "rgba(15,28,46,0.5)",
+          }}
+        >
+          ⚠️ Le Fonds de Bourses et ses objectifs sont des orientations de mission en
+          cours de dimensionnement. Ils ne constituent pas un engagement contractuel.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+// =============================================
+// SECTION 6 — CTA
+// =============================================
+function CTA() {
+  return (
+    <section
+      style={{
+        background: COLORS.teal,
+        padding: "80px 24px",
+        textAlign: "center",
+      }}
+    >
+      <div style={{ maxWidth: 600, margin: "0 auto" }}>
+        <h2
+          style={{
+            fontFamily: fonts.title,
+            color: COLORS.cream,
+            fontSize: 32,
+            fontWeight: 600,
+            marginBottom: 24,
+          }}
+        >
+          Construire cet horizon avec nous
+        </h2>
+
+        <p
+          style={{
+            fontFamily: fonts.body,
+            color: COLORS.cream,
+            fontSize: 16,
+            lineHeight: 1.8,
+            marginBottom: 12,
+            opacity: 0.9,
+          }}
+        >
+          ARCHIPEL cherche des mécènes, des partenaires institutionnels et des
+          praticiens qui partagent cette conviction : que la santé se crée, et qu'elle
+          ne devrait pas se porter seul.
+        </p>
+
+        <p
+          style={{
+            fontFamily: fonts.body,
+            color: COLORS.cream,
+            fontSize: 16,
+            lineHeight: 1.8,
+            marginBottom: 40,
+            opacity: 0.9,
+          }}
+        >
+          Si vous souhaitez en savoir plus sur la fondation, son modèle de
+          gouvernance, ou les modalités de soutien — nous sommes disponibles.
+        </p>
+
+        <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+          <button
+            style={{
+              background: COLORS.gold,
+              color: COLORS.navy,
+              border: "none",
+              padding: "14px 36px",
+              fontFamily: fonts.body,
+              fontSize: 15,
+              fontWeight: 600,
+              borderRadius: 4,
+              cursor: "pointer",
+              letterSpacing: 0.5,
+            }}
+          >
+            Nous contacter
+          </button>
+          <button
+            style={{
+              background: "transparent",
+              color: COLORS.cream,
+              border: `1.5px solid ${COLORS.cream}`,
+              padding: "14px 36px",
+              fontFamily: fonts.body,
+              fontSize: 15,
+              fontWeight: 500,
+              borderRadius: 4,
+              cursor: "pointer",
+              letterSpacing: 0.5,
+            }}
+          >
+            Découvrir notre approche
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================
+// TECH BRIEF PANEL
+// =============================================
+function TechBrief() {
+  const [open, setOpen] = useState(false);
+  const specs = [
+    { label: "Logo", value: "LOGO_Foundation_gold_fd_transp2.png" },
+    { label: "Titres", value: "CoCoMat Pro (mockup: Cormorant Garamond)" },
+    { label: "Corps", value: "Tenor Sans (mockup: DM Sans)" },
+    { label: "Labels/nav", value: "Archytype Bayer-Type" },
+    { label: "Navy", value: "#0f1c2e" },
+    { label: "Gold", value: "#dbb878" },
+    { label: "Cream", value: "#ede3d6" },
+    { label: "Teal", value: "#2a5a5e" },
+    { label: "Slug", value: "/vision" },
+    { label: "SEO title", value: "Notre Vision — ARCHIPEL Foundation" },
+  ];
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        bottom: 16,
+        right: 16,
+        zIndex: 1000,
+        fontFamily: fonts.body,
+      }}
+    >
+      {open && (
+        <div
+          style={{
+            background: COLORS.navy,
+            border: `1px solid ${COLORS.gold}`,
+            borderRadius: 8,
+            padding: 16,
+            marginBottom: 8,
+            width: 320,
+            maxHeight: "60vh",
+            overflow: "auto",
+          }}
+        >
+          <p style={{ color: COLORS.gold, fontSize: 11, letterSpacing: 2, margin: "0 0 12px", textTransform: "uppercase" }}>
+            Brief technique — Production
+          </p>
+          {specs.map((s) => (
+            <div key={s.label} style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+              <span style={{ color: COLORS.cream, fontSize: 12, opacity: 0.7 }}>{s.label}</span>
+              <span style={{ color: COLORS.cream, fontSize: 12, fontWeight: 500 }}>{s.value}</span>
+            </div>
+          ))}
+          <div style={{ borderTop: `1px solid rgba(219,184,120,0.2)`, paddingTop: 10, marginTop: 10 }}>
+            <p style={{ color: COLORS.cream, fontSize: 11, opacity: 0.6, margin: 0 }}>
+              Séquence rhétorique : Ethos → Logos → Pathos
+              <br />
+              Ton : Institutionnel (pas manifeste)
+              <br />
+              Ajustements v1 : Y2=France, Fonds de Bourses qualitatif
+            </p>
+          </div>
+        </div>
+      )}
+      <button
+        onClick={() => setOpen(!open)}
+        style={{
+          background: COLORS.teal,
+          color: COLORS.cream,
+          border: "none",
+          borderRadius: 20,
+          padding: "8px 16px",
+          fontSize: 12,
+          cursor: "pointer",
+          fontFamily: fonts.body,
+        }}
+      >
+        {open ? "✕ Fermer" : "⚙ Brief technique"}
+      </button>
+    </div>
+  );
+}
+
+// =============================================
+// MAIN PAGE
+// =============================================
+function VisionPage() {
+  return (
+    <div style={{ margin: 0, padding: 0 }}>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+        rel="stylesheet"
+      />
+      <Hero />
+      <Conviction />
+      <Trajectoire />
+      <Fondation />
+      <RobinHood />
+      <CTA />
+      <TechBrief />
+    </div>
+  );
+}
+
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(VisionPage));
+</script>
+
+<style>
+  .hero-photo-bg {
+    position: relative !important;
+  }
+  .hero-photo-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('images/hero-vision.webp');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+  }
+  .hero-photo-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(15,28,46,0.92) 0%, rgba(15,28,46,0.55) 40%, rgba(15,28,46,0.25) 100%);
+    z-index: 1;
+  }
+  .hero-photo-bg > * {
+    position: relative;
+    z-index: 2;
+  }
+</style>
+<script>
+  setTimeout(function() {
+    var s = document.querySelector('#root > div > section:first-of-type') 
+         || document.querySelector('#root section:first-of-type');
+    if (s) {
+      s.classList.add('hero-photo-bg');
+      Array.from(s.children).forEach(function(c) {
+        c.style.position = 'relative';
+        c.style.zIndex = '2';
+      });
+    }
+  }, 1500);
+</script>
+
+</body>
+</html>
